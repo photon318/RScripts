@@ -22,6 +22,7 @@ y_pred = predict(regressor, newdata = test_set)
 #install.packages("ggplot2")
 library(ggplot2)
 
+#plotting training set data with lin.regression line
 ggplot() +
   geom_point(aes(x = training_set$YearsExperience, y = training_set$Salary),
              colour = 'red') +
@@ -35,7 +36,7 @@ ggplot() +
   xlab('Years') +
   ylab('Salary')
 
-
+#plotting test data with traied lin. regression line
 ggplot() +
   geom_point(aes(x = test_set$YearsExperience, y = test_set$Salary),
              colour = 'red') +
@@ -48,3 +49,63 @@ ggplot() +
   ggtitle('SALARY vs EXPERIENCE (prediction)') +
   xlab('Years') +
   ylab('Salary')
+
+
+#plotting both train dataset and test data set over lin. regression line
+
+ggplot() +
+  geom_point(aes(x = training_set$YearsExperience, y = training_set$Salary),
+             colour = 'red') +
+  geom_point(aes(x = test_set$YearsExperience, y = test_set$Salary),
+             colour = 'green') +
+  
+    geom_line(aes(
+    x = training_set$YearsExperience,
+    y = predict(regressor,
+                newdata = training_set)
+  ), colour = 'blue') +
+  
+  ggtitle('SALARY vs EXPERIENCE (prediction)') +
+  xlab('Years') +
+  ylab('Salary')
+
+
+#lets see if regression line will be changed if to train this on full dataset
+#creating new regression objec and training it
+
+regressor_full  = lm(formula = Salary ~ YearsExperience,
+                data = dataset)
+
+y_full_predict = predict(regressor_full, newdata = dataset)
+
+ggplot() +
+  geom_point(aes(x = training_set$YearsExperience, y = training_set$Salary),
+             colour = 'red') +
+  geom_point(aes(x = test_set$YearsExperience, y = test_set$Salary),
+             colour = 'green') +
+
+  # Attempt to see y_ values predicted by trained full data. 
+  # Yes they are on the exact trainded line.
+    geom_point(aes(x = dataset$YearsExperience, y = y_full_predict),
+             colour = 'orange') +
+  
+  #trained on recuded samples   
+  geom_line(aes(
+    x = training_set$YearsExperience,
+    y = predict(regressor,
+                newdata = training_set)
+  ), colour = 'blue') +
+
+  #regresion on full set of original set
+  geom_line(aes(
+    x = dataset$YearsExperience,
+    y = predict(regressor_full,
+                newdata = dataset)
+  ), colour = 'orange') +
+  
+
+  ggtitle('SALARY vs EXPERIENCE (prediction)') +
+  xlab('Years') +
+  ylab('Salary')
+
+
