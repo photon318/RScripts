@@ -1,7 +1,8 @@
-
+setwd("/Users/Alexz/Documents/GitHub/RScripts/Data")
 
 dataset = read.csv("Salary_Data.csv")
 
+#install.packages("caTools")
 library(caTools)
 
 set.seed(123)
@@ -36,17 +37,6 @@ geom_line(aes(x = training_set$YearsExperience, y = predict(regressor,
 ggtitle('SALARY vs EXPERIENCE') + 
 xlab('Years') + 
 ylab('Salary')
-
-
-ggplot() +
-  geom_point(aes(x = training_set$YearsExperience, y = training_set$Salary),
-             colour = 'red') + 
-  geom_line(aes(x = training_set$YearsExperience, y = predict(regressor, 
-                                                              newdata = training_set)), colour = 'blue') +
-  
-  ggtitle('SALARY vs EXPERIENCE') + 
-  xlab('Years') + 
-  ylab('Salary')
 
 
 ggplot() +
