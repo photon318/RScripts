@@ -76,7 +76,7 @@ ggplot() +
 regressor_full  = lm(formula = Salary ~ YearsExperience,
                 data = dataset)
 
-y_full_predict = predict(regressor_full, newdata = dataset)
+y_predict_train = predict(regressor_full, newdata = training_set)
 
 ggplot() +
   geom_point(aes(x = training_set$YearsExperience, y = training_set$Salary),
@@ -86,7 +86,7 @@ ggplot() +
 
   # Attempt to see y_ values predicted by trained full data. 
   # Yes they are on the exact trainded line.
-    geom_point(aes(x = dataset$YearsExperience, y = y_full_predict),
+    geom_point(aes(x = training_set$YearsExperience, y = y_predict_train),
              colour = 'orange') +
   
   #trained on recuded samples   
