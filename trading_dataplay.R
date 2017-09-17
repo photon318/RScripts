@@ -1,28 +1,34 @@
 library(quantmod)
 library(ggplot2)
 
-symb = getSymbols("TSLA", 
-           src = "google", 
-           auto.assign = FALSE) # autoassign false to load into variable.
+symb = getSymbols("TSLA",
+                  src = "google",
+                  auto.assign = FALSE) # autoassign false to load into variable.
 
 #chartSeries(MSFT)
 
 #chartSeries(MSFT, subset='last 4 months')
 
-chartSeries(symb, subset='2016/2017', TA=c(addRSI(2),addROC(),addVo()), show.grid = TRUE, theme =chartTheme("black"))
+chartSeries(
+  symb,
+  subset = '2016/2017',
+  TA = c(addRSI(2), addROC(), addVo()),
+  show.grid = TRUE,
+  theme = chartTheme("black")
+)
 
 
 
 #chartSeries(PCLN, subset='2017', TA=(add_RSI(14)), show.grid = TRUE, theme =chartTheme("black"))
 
-add_RSI(n=2)
+add_RSI(n = 2)
 
 
-chart_Series(MSFT_ret, subset='2016/2017')
+chart_Series(MSFT_ret, subset = '2016/2017')
 
-chart_Series(PCLN ,  subset='2017')
+chart_Series(PCLN ,  subset = '2017')
 
-add_RSI(n=2)
+add_RSI(n = 2)
 
 
 
@@ -33,31 +39,47 @@ add_RSI(n=2)
 
 #addMACD()   #  add MACD indicator to current chart
 
+#Plotting retuns of the symbol with caculated STD,
+symbol_name = "AAPL"
+symb = getSymbols(symbol_name,
+                  src = "google",
+                  auto.assign = FALSE) # autoassign false to load into variable.
 
+returns = periodReturn(symb, period = 'monthly', subset = '2000/2017') * 100
+std = sd(returns)
+#plotting
+barplot(returns,
+        ylab = "Returns, %",
+        xlab = "Months",
+        main = symbol_name)
+abline(h =  -std, col = "red")
+abline(h =  std, col = "red")
+abline(h =  mean(returns), col = 'yellow')
+abline(h =  median(returns), col = 'orange')
 
-MSFT_ret = periodReturn(MSFT, period = 'monthly', subset = '2000/2016') * 100
-#std = sd(MSFT_ret)
-#barplot(MSFT_ret)
-#abline(h =  - std)
-#abline(h =  std)
-#abline(h =  mean(MSFT_ret))
-#abline(h =  median(MSFT_ret))
-plot(MSFT_ret)
+#plot(MSFT_ret)
 
-getSymbols("PCLN", 
-           src = "google", 
-           auto.assign = TRUE) # autoassign false to load into variable.
+#getSymbols("PCLN",
+#           src = "google",
+#           auto.assign = TRUE) # autoassign false to load into variable.
 
 #MSFT_ret = as.integer(periodReturn(MSFT, period = 'weekly', subset = '2006/2016') * 100)
-returns = periodReturn(NVDA, period = 'monthly', subset = '2006/2017') * 100
+returns = periodReturn(symb, period = 'monthly', subset = '2006/2017') * 100
 
-ret_3d = matrix( returns, 11, 12, dimnames = list(c(2006:2016), c(rep("month", 12))) )
+ret_3d = matrix(returns, 11, 12, dimnames = list(c(2006:2016), month.abb))
 
 ret_3d
 
-persp(ret_3d, theta = 0, phi = 30, expand = 0.5, col = "lightblue",
-      ltheta = 120, shade = 0.75, ticktype = "detailed"
-      #,      xlab = "X", ylab = "Y", zlab = "Sinc( r )" 
+persp( x = c(2006:2016),  y=c(1:12),
+  ret_3d,
+  theta = -30,
+  phi = 45,
+  expand = 0.5,
+  col = "lightblue",
+  ltheta = 120,
+  shade = 0.75,
+  ticktype = "detailed", nticks = 12
+  ,  xlab = "Years", ylab = "Months", zlab = "Retruns, %"
 )
 
 
@@ -66,38 +88,19 @@ persp(ret_3d, theta = 0, phi = 30, expand = 0.5, col = "lightblue",
 
 #persp(msft_3d, theta = 30, phi = 30, expand = 0.5, col = "lightblue")
 
-      
 
-image(msft_3d)
+image(
+  ret_3d,
+  main = c(symbol_name, " returns"),
+  xlab = "Years",
+  ylab = "Months"
+)
 
-x <- -100:0
-y <- (x+1)/(x-1)
-plot(x,y, type = "l")
-
-
-x <- -20:0
-y  <- -2/5*(x+1)^2
-plot(x,y, type = "l")
-
-
-x <- -20:10
-y  <- 4.5*(4-3*x)^2
-plot(x,y, type = "l")
+#x <- -100:0
+#y <- (x + 1) / (x - 1)
+#plot(x, y, type = "l")
 
 
-x <- -20:20
-y  <- (x-4)^2+3
-plot(x,y, type = "l")
-
-
-x <- -20:20
-y  <- -(x+2)^2-1
-plot(x,y, type = "l")
-
-
-
-#persp(volcano, expand = 0.2)
-
-mean(MSFT_ret) * 100
-
-
+#x <- -20:0
+#y  <- -2 / 5 * (x + 1) ^ 2
+#plot(x, y, type = "l")
