@@ -26,3 +26,4 @@ principal = tr["Quantity"] * tr["PriceAmount"]
 print(principal)
 print(tr["Principal"])
 while(principal = tr["Principal"]) print(principal)
+  
