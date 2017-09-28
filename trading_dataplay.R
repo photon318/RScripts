@@ -88,7 +88,6 @@ persp( x = c(2006:2016),  y=c(1:12),
 
 #persp(msft_3d, theta = 30, phi = 30, expand = 0.5, col = "lightblue")
 
-
 image(
   ret_3d,
   main = c(symbol_name, " returns"),
@@ -104,3 +103,22 @@ image(
 #x <- -20:0
 #y  <- -2 / 5 * (x + 1) ^ 2
 #plot(x, y, type = "l")
+
+setDefaults(getSymbols,verbose=TRUE, src='google')
+my.model <- specifyModel(Next(OpCl(QQQ)) ~ Lag(Cl(SPY),0:5))
+getModelData(my.model)
+
+
+x = getSymbols("NVDA",
+                  src = "google",
+                  auto.assign = FALSE)
+x[1]
+Cl(x[1])
+OpCl(x[1])   # generates return from Open to Close, equal to C/O-1
+LoHi(x[1])  # return from Low to High,  equal to H/L-1
+25.01/23.19-1
+24.05/24.71-1
+HLC(x)
+
+
+
